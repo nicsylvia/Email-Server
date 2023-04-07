@@ -1,4 +1,4 @@
-interface IUSER {
+export interface IUSER {
   username: string;
   email: string;
   password: string;
