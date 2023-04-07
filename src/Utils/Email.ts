@@ -11,13 +11,13 @@ const GOOGLE_REFRESHTOKEN: string = "";
 const GOOGLE_REDIRECT: string = "";
 
 // oAUTH is open authentication, we want to tap to google's authentication
-const oAUTH = new google.auth.oAUTH(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT);
+const oAUTH = new google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT);
 
 export const VerifyAccount = async () => {
   try {
     oAUTH.setCredentials({ access_token: GOOGLE_REFRESHTOKEN });
 
-    const GetToken = await oAUTH.getAccessToken;
+    const GetToken = await oAUTH.getAccessToken();
 
     // Nodemailer aspect:
     const transporter = nodemailer.createTransport({
@@ -31,7 +31,21 @@ export const VerifyAccount = async () => {
       },
     });
 
-    const MailerOption = {};
+    const MailerOption = {
+      from: "Easy Pay 💰💷💶💵💰",
+      to: "Send Email",
+      subject: "BUGA ALERT!!! WAKE UP",
+      html: `<div>Moeney has been paid</div>`,
+    };
+
+    transporter
+      .sendMail(MailerOption)
+      .then(() => {
+        console.log("Email has been sent");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   } catch (error) {
     console.log(error);
   }
