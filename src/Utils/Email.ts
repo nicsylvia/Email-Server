@@ -2,13 +2,15 @@ import { google } from "googleapis";
 
 import nodemailer from "nodemailer";
 
-const GOOGLE_ID: string = "";
+import { EnvironmentVariables } from "../Config/EnvironmentVariables";
 
-const GOOGLE_SECRET: string = "";
+const GOOGLE_ID: string = EnvironmentVariables.GOOGLE_ID;
+
+const GOOGLE_SECRET: string = EnvironmentVariables.GOOGLE_SECRET;
 
 const GOOGLE_REFRESHTOKEN: string = "";
 
-const GOOGLE_REDIRECT: string = "";
+const GOOGLE_REDIRECT: string = "https://developers.google.com/oauthplayground";
 
 // oAUTH is open authentication, we want to tap to google's authentication
 const oAUTH = new google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT);
@@ -27,7 +29,7 @@ export const VerifyAccount = async () => {
         clientId: GOOGLE_ID,
         clientSecret: GOOGLE_SECRET,
         refreshToken: GOOGLE_REFRESHTOKEN,
-        accessToken: GetToken?.token,
+        accessToken: GetToken?.token!,
       },
     });
 

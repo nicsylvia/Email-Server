@@ -51,17 +51,47 @@ export const UpdateUser = async (
     });
   }
 
-  const Users = await UserModels.create({
-    email,
-    username,
-    password: hashedPassword,
-  });
+  const Users = await UserModels.findByIdAndUpdate(
+    {req.params.userID}, {username}, {new: true}
+  ),
 
   return res.status(201).json({
-    message: "Successfully created User",
+    message: "Successfully Updated User",
     data: Users,
   });
 };
 
-//   Get all user
-//Get one user
+// Get all user
+export const GetAllUser = async (req: Request, res: Response, next: NextFunction) => {
+    const user = await UserModels.find();
+
+    if (!user) {
+      return res.status(404).json({
+          message: "Couldn't get all users",
+        });
+    }
+
+    return res.status(200).json({
+      message: "Successfully got all users",
+      data: user,
+    });
+}
+
+// Get one user
+export const GetSingleUser = async (req: Request, res: Response, next: NextFunction) => {
+      const singleuser = await UserModels.findById(req.params.userID);
+
+      if (!singleuser) {
+        return res.status(404).json({
+            message: "User with this account does not exist",
+          });
+      }
+  
+      return res.status(200).json({
+        message: "Successfully got this single user",
+        data: singleuser,
+      });
+}
+
+
+// Delete a user
